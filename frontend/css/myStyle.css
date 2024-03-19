@@ -1,0 +1,14 @@
+/* Footer Styles */
+footer{
+    background-color: rgba(0, 100, 0, 0.74);
+    color: white;
+    text-align: center;
+}
+a.foot-link:link, a.foot-link:visited {
+    color: white;
+  } 
+
+a.foot-link:hover {
+    color: black;
+  }
+}
