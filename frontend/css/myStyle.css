@@ -1,9 +1,27 @@
-/* Footer Styles */
-footer{
-    background-color: rgba(0, 100, 0, 0.74);
-    color: white;
-    text-align: center;
+/* Body styles */
+body {
+  background-color: darkgray;
 }
+
+
+/* Footer Styles */
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(0, 100, 0, 0.74);
+  color: white;
+  text-align: center;
+  padding-top: 20px;
+  margin-top: 50px;
+}
+
+#contactHeader {
+  font-size: 20px;
+  font-weight: bold;
+}
+
 a.foot-link:link, a.foot-link:visited {
     color: white;
   } 
@@ -11,4 +29,37 @@ a.foot-link:link, a.foot-link:visited {
 a.foot-link:hover {
     color: black;
   }
+
+/* Navbar styles */
+
+#logo {
+    width: 30px;
+    height: 30px;
+    margin: 10px;
 }
+
+.navbar {
+  background-color: rgba(0, 100, 0, 0.74);
+  font-size: 18px;
+  font-weight: bold;
+}
+
+a:active {
+  color: white;
+}
+
+  /*
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 1px 1px 3px black;
+  background: #2c3e50;
+  border-radius: 5px;
+  margin: 10px;
+  display: none;
+  z-index: 7;
+  padding: 25px;
+}
+*/
