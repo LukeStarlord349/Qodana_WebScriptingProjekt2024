@@ -47,7 +47,7 @@
 
     <!-- Platzhalter Appointments -->
 
-    <div class="card appointment" style="width: 18rem;">
+    <div class="card appointment">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">Date:</li>
             <li class="list-group-item">Title:</li>
@@ -56,7 +56,7 @@
             <li class="list-group-item">Deadline</li>
         </ul>
     </div>
-    <div class="card appointment" style="width: 18rem;">
+    <div class="card appointment">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">Date:</li>
             <li class="list-group-item">Title:</li>
@@ -65,7 +65,7 @@
             <li class="list-group-item">Deadline</li>
         </ul>
     </div>
-    <div class="card appointment" style="width: 18rem;">
+    <div class="card appointment">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">Date:</li>
             <li class="list-group-item">Title:</li>
@@ -74,12 +74,10 @@
             <li class="list-group-item">Deadline</li>
         </ul>
     </div>
-
 
 
 
     <!-- Login Modal -->
-
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -105,7 +103,6 @@
     </div>
 
 
-
     <!-- New Appointment Modal -->
     <div class="modal fade" id="newAppointmentModal" tabindex="-1" aria-labelledby="newAppointmentModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -123,9 +120,9 @@
                     <label class="descr formleft" for="deadline">Deadline:</label><input class="popup_input formright forminput" type="datetime-local" name="deadline" /> <br>
                 </div>
                 <div class="formcontent grid equal">
-                    <p class="formtext formfull" id="timeslot-prompt"><a id="addTimeslot">Add&nbsp;a&nbsp;timeslot</a></p>
-                    <button type="button" class="btn btn-light formleft" data-bs-dismiss="modal"><i class="far fa-window-close"></i>&nbsp;Cancel</button>
-                    <button type="button" class="btn btn-light formright" id="sendAppoint"><i class="fas fa-sign-in-alt"></i>&nbsp;Create</button>
+                    <p class="formtext formfull" id="timeslot-prompt"><a id="addTimeslot">Add timeslot</a></p>
+                    <button type="button" class="btn btn-light formleft" data-bs-dismiss="modal"><i class="far fa-window-close"></i>Cancel</button>
+                    <button type="button" class="btn btn-light formright" id="sendAppoint"><i class="fas fa-sign-in-alt"></i>Create</button>
                 </div>
                 </form>
             </div>
@@ -134,8 +131,7 @@
     </div>
 
 
-    
-    <!-- Einen Footer -->
+    <!-- Footer -->
     <footer>
         <h1 id="contactHeader">Kontakt</h1>
         <p><strong>Telefonnummer: </strong> <a class="foot-link" href="tel:06601234567">0664 1234567</a><br>
