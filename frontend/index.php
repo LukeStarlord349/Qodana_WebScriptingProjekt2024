@@ -135,7 +135,7 @@
     <footer>
         <h1 id="contactHeader">Kontakt</h1>
         <p><strong>Telefonnummer: </strong> <a class="foot-link" href="tel:06601234567">0664 1234567</a><br>
-        <strong>E-Mail: </strong><a class="foot-link" href="mailto:schedule@plandemic.com">schedule@shenanigans.com</a></p>
+        <strong>E-Mail: </strong><a class="foot-link" href="mailto:schedule@plandemic.com">schedule@plandemic.com</a></p>
         <p>© Copyright - PlanDemic</p>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
