@@ -95,6 +95,8 @@
                 <label for="loginPassword" class="form-label">Password</label>
                 <input type="password" class="form-control" id="loginPassword">
             </div>
+            <!--If not logged in register-->
+            <p>Not registered yet? <a id="registerLink" data-bs-toggle="modal" data-bs-target="#registerModal">Register here</a></p>
             <button type="submit" id="loginButton" class="btn btn-light">Login</button>
             </form>
         </div>
@@ -102,30 +104,56 @@
     </div>
     </div>
 
+    <!-- Register Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registerModalLabel">Register</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"> <!-- Fixed missing '>' here -->
+                <form id="registerForm">
+                    <div class="mb-3">
+                        <label for="registerEmail" class="form-label">Email</label> <!-- Fixed missing closing quotes and '>' here -->
+                        <input type="email" class="form-control" id="registerEmail" aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="registerPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="registerPassword">
+                    </div>
+                    <button type="submit" id="registerButton" class="btn btn-light">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
     <!-- New Appointment Modal -->
     <div class="modal fade" id="newAppointmentModal" tabindex="-1" aria-labelledby="newAppointmentModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="newAppointmentModalLabel">New Appointment</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="new-appoint" class="popup">
-                <div class="formcontent grid" id="appoint-inputs">
-                    <label class="descr formleft" for="title">Title:</label><input class="popup_input formright forminput" type="text" name="title" /> <br>
-                    <label class="descr formleft" for="descr">Description:</label><input class="popup_input formright forminput" type="text" name="descr" /> <br>
-                    <label class="descr formleft" for="duration">Duration (in min.):</label><input class="popup_input formright forminput" type="number" name="duration" /> <br>
-                    <label class="descr formleft" for="deadline">Deadline:</label><input class="popup_input formright forminput" type="datetime-local" name="deadline" /> <br>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newAppointmentModalLabel">New Appointment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="formcontent grid equal">
-                    <p class="formtext formfull" id="timeslot-prompt"><a id="addTimeslot">Add timeslot</a></p>
-                    <button type="button" class="btn btn-light formleft" data-bs-dismiss="modal"><i class="far fa-window-close"></i>Cancel</button>
-                    <button type="button" class="btn btn-light formright" id="sendAppoint"><i class="fas fa-sign-in-alt"></i>Create</button>
+                <div class="modal-body">
+                    <form id="new-appoint" class="popup">
+                    <div class="formcontent grid" id="appoint-inputs">
+                        <label class="descr formleft" for="title">Title:</label><input class="popup_input formright forminput" type="text" name="title" /> <br>
+                        <label class="descr formleft" for="descr">Description:</label><input class="popup_input formright forminput" type="text" name="descr" /> <br>
+                        <label class="descr formleft" for="duration">Duration (in min.):</label><input class="popup_input formright forminput" type="number" name="duration" /> <br>
+                        <label class="descr formleft" for="deadline">Deadline:</label><input class="popup_input formright forminput" type="datetime-local" name="deadline" /> <br>
+                    </div>
+                    <div class="formcontent grid equal">
+                        <p class="formtext formfull" id="timeslot-prompt"><a id="addTimeslot">Add timeslot</a></p>
+                        <button type="button" class="btn btn-light formleft" data-bs-dismiss="modal"><i class="far fa-window-close"></i>Cancel</button>
+                        <button type="button" class="btn btn-light formright" id="sendAppoint"><i class="fas fa-sign-in-alt"></i>Create</button>
+                    </div>
+                    </form>
                 </div>
-                </form>
-            </div>
             </div>
         </div>
     </div>
@@ -133,10 +161,16 @@
 
     <!-- Footer -->
     <footer>
-        <h1 id="contactHeader">Kontakt</h1>
-        <p><strong>Telefonnummer: </strong> <a class="foot-link" href="tel:06601234567">0664 1234567</a><br>
-        <strong>E-Mail: </strong><a class="foot-link" href="mailto:schedule@plandemic.com">schedule@plandemic.com</a></p>
-        <p>© Copyright - PlanDemic</p>
+    <div class="py-5">
+        <div class="card-header footer-header">
+            <h1>Kontakt</h1>
+        </div>
+        <div class="card-body">
+            <p><strong>Telefonnummer: </strong> <a class="foot-link" href="tel:06601234567">0664 1234567</a><br>
+            <strong>E-Mail: </strong><a class="foot-link" href="mailto:schedule@plandemic.com">schedule@plandemic.com</a></p>
+            <p>© Copyright - PlanDemic</p>
+        </div>
+    </div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
