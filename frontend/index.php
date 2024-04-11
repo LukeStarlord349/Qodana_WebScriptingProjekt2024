@@ -13,6 +13,7 @@
 </head>
 
 <body>
+    <main>
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top">
@@ -45,142 +46,131 @@
     <!-- Eine Liste mit den Terminen wird via JS erstellt (Jeder Termin eine eigene Bootstrap Card)-->
     <h1>Appointments Overview</h1>
 
-    <!-- Platzhalter Appointments -->
-
     <div class="card appointment">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">Date:</li>
             <li class="list-group-item">Title:</li>
-            <li class="list-group-item">Description:</li>
-            <li class="list-group-item">Duration</li>
-            <li class="list-group-item">Deadline</li>
-        </ul>
-    </div>
-    <div class="card appointment">
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">Date:</li>
-            <li class="list-group-item">Title:</li>
-            <li class="list-group-item">Description:</li>
-            <li class="list-group-item">Duration</li>
-            <li class="list-group-item">Deadline</li>
-        </ul>
-    </div>
-    <div class="card appointment">
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">Date:</li>
-            <li class="list-group-item">Title:</li>
-            <li class="list-group-item">Description:</li>
-            <li class="list-group-item">Duration</li>
-            <li class="list-group-item">Deadline</li>
+            <li class="list-group-item">Status:</li>
         </ul>
     </div>
 
+    <div class="card appointment">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Date:</li>
+            <li class="list-group-item">Title:</li>
+            <li class="list-group-item">Status:</li>
+        </ul>
+    </div>
 
 
     <!-- Login Modal -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="loginModalLabel">Login</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form id="loginForm">
-            <div class="mb-3">
-                <label for="loginEmail" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="mb-3">
-                <label for="loginPassword" class="form-label">Password</label>
-                <input type="password" class="form-control" id="loginPassword">
+            <div class="modal-body">
+                <form id="loginForm">
+                <div class="mb-3">
+                    <label for="loginEmail" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp" required>
+                </div>
+                <div class="mb-3">
+                    <label for="loginPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="loginPassword" required>
+                </div>
+                <!--If not logged in register-->
+                <p>Not registered yet? Register <a id="registerLink" class="highlight-link" data-bs-toggle="modal" data-bs-target="#registerModal">here!</a></p>
+                <button type="submit" id="loginButton" class="btn btn-light">Login</button>
+                </form>
             </div>
-            <!--If not logged in register-->
-            <p>Not registered yet? Register <a id="registerLink" class="highlight-link" data-bs-toggle="modal" data-bs-target="#registerModal">here!</a></p>
-            <button type="submit" id="loginButton" class="btn btn-light">Login</button>
-            </form>
+            </div>
         </div>
-        </div>
-    </div>
     </div>
 
     <!-- Register Modal -->
     <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="registerModalLabel">Register</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="registerForm">
-                    <div class="mb-3">
-                        <label for="registerEmail" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="registerEmail" aria-describedby="emailHelp">
-                    </div>
-                    <div class="mb-3">
-                        <label for="registerPassword" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="registerPassword">
-                    </div>
-                    <button type="submit" id="registerButton" class="btn btn-light">Register</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<!-- New Appointment Modal -->
-<div class="modal fade" id="newAppointmentModal" tabindex="-1" aria-labelledby="newAppointmentModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="newAppointmentModalLabel">New Appointment</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="new-appoint">
-                    <div class="mb-3">
-                        <label for="title" class="form-label">Title:</label>
-                        <input type="text" class="form-control" id="title" name="title">
-                    </div>
-                    <div class="mb-3">
-                        <label for="descr" class="form-label">Description:</label>
-                        <textarea class="form-control" id="descr" name="descr" rows="3"></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="duration" class="form-label">Duration (in min.):</label>
-                        <input type="number" class="form-control" id="duration" name="duration">
-                    </div>
-                    <div class="mb-3">
-                        <label for="deadline" class="form-label">Deadline:</label>
-                        <input type="datetime-local" class="form-control" id="deadline" name="deadline">
-                    </div>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal"><i class="far fa-window-close"></i> Cancel</button>
-                        <button type="button" class="btn btn-light" id="sendAppoint"><i class="fas fa-sign-in-alt"></i> Create</button>
-                    </div>
-                </form>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">Register</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="registerForm">
+                        <div class="mb-3">
+                            <label for="registerEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="registerEmail" aria-describedby="emailHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerPassword1" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="registerPassword">
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerPassword2" class="form-label">Repeat Password</label>
+                            <input type="password" class="form-control" id="registerPassword"> <br>
+                        </div>
+                        <button type="submit" id="registerButton" class="btn btn-light">Register</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
+
+    <!-- New Appointment Modal -->
+    <div class="modal fade" id="newAppointmentModal" tabindex="-1" aria-labelledby="newAppointmentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newAppointmentModalLabel">New Appointment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="new-appoint">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title:</label>
+                            <input type="text" class="form-control" id="title" name="title">
+                        </div>
+                        <div class="mb-3">
+                            <label for="descr" class="form-label">Description:</label>
+                            <textarea class="form-control" id="descr" name="descr" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="duration" class="form-label">Duration (in min.):</label>
+                            <input type="number" class="form-control" id="duration" name="duration">
+                        </div>
+                        <div class="mb-3">
+                            <label for="deadline" class="form-label">Deadline:</label>
+                            <input type="datetime-local" class="form-control" id="deadline" name="deadline">
+                        </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal"><i class="far fa-window-close"></i> Cancel</button>
+                            <button type="button" class="btn btn-light" id="sendAppoint"><i class="fas fa-sign-in-alt"></i> Create</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </main>
 
     <!-- Footer -->
     <footer>
-    <div class="py-5">
-        <div class="card-header footer-header">
-            <h1>Kontakt</h1>
+        <div class="py-1">
+            <div class="card-header footer-header">
+                <h1 id="contactHeader">Kontakt</h1>
+            </div>
+            <div class="card-body">
+                <p><strong>Telefonnummer: </strong> <a class="foot-link" href="tel:06601234567">0664 1234567</a><br>
+                <strong>E-Mail: </strong><a class="foot-link" href="mailto:schedule@plandemic.com">schedule@plandemic.com</a></p>
+                <p>© Copyright - PlanDemic</p>
+            </div>
         </div>
-        <div class="card-body">
-            <p><strong>Telefonnummer: </strong> <a class="foot-link" href="tel:06601234567">0664 1234567</a><br>
-            <strong>E-Mail: </strong><a class="foot-link" href="mailto:schedule@plandemic.com">schedule@plandemic.com</a></p>
-            <p>© Copyright - PlanDemic</p>
-        </div>
-    </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

@@ -2,6 +2,19 @@
 body {
   background-color: darkgray;
   padding-top: 70px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+}
+
+main {
+  flex: 1; 
+  margin: 20px;
+}
+
+main {
+ margin: 20px 20px 20px 20px;
 }
 
 
@@ -10,10 +23,11 @@ footer {
   background-color: rgba(0, 100, 0, 0.74);
   color: white;
   text-align: center;
+  padding-top: 20px;
 }
 
 #contactHeader {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
 }
 
@@ -54,17 +68,19 @@ a:active {
   padding: 20px; 
 }
 
+.highlight-link {
+  color: #007bff;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Register Modal */
+
 /* Appointment-Card */
 .appointment {
   color: darkgray;
   border-radius: 8px;
   width: 75%;
   margin: 20px auto 20px auto;
-}
-
-.highlight-link {
-  color: #007bff;
-  font-weight: bold;
-  text-decoration: underline;
-  cursor: pointer;
 }
