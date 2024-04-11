@@ -89,4 +89,4 @@ host: Der Hostname des Datenbankservers, auf dem die MySQL-Datenbank läuft. Die
 username: Der Benutzername, der zum Verbinden mit der MySQL-Datenbank verwendet wird.
 password: Das Passwort für den angegebenen Benutzer.
 schema: Der Name der Datenbank, zu der eine Verbindung hergestellt werden soll.
-Stellen Sie sicher, dass Sie die tatsächlichen Verbindungsinformationen entsprechend Ihrer spezifischen MySQL-Installation anpassen. Diese db_settings.ini-Datei müsste im gleichen Verzeichnis wie das PHP-Skript liegen, das die mysqli_init-Klasse verwendet.
+Stellen Sie sicher, dass Sie die tatsächlichen Verbindungsinformationen entsprechend Ihrer spezifischen MySQL-Installation anpassen. Diese db_settings.ini-Datei müsste im gleichen Verzeichnis wie das PHP-Skript liegen, das die mysqli_init-Klasse verwendet. Jo
