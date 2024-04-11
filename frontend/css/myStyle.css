@@ -10,7 +10,6 @@ footer {
   background-color: rgba(0, 100, 0, 0.74);
   color: white;
   text-align: center;
-  margin-top: 50px;
 }
 
 #contactHeader {
@@ -61,4 +60,11 @@ a:active {
   border-radius: 8px;
   width: 75%;
   margin: 20px auto 20px auto;
+}
+
+.highlight-link {
+  color: #007bff;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
 }
