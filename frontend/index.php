@@ -59,6 +59,9 @@
             <li class="list-group-item">Date:</li>
             <li class="list-group-item">Title:</li>
             <li class="list-group-item">Status:</li>
+            <li class="list-group-item">Description:</li>
+            <li class="list-group-item">Duration:</li>
+            <li class="list-group-item">Deadline:</li>
         </ul>
     </div>
 
@@ -110,7 +113,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="registerPassword2" class="form-label">Repeat Password</label>
-                            <input type="password" class="form-control" id="registerPassword"> <br>
+                            <input type="password" class="form-control" id="registerPassword2"> <br>
                         </div>
                         <button type="submit" id="registerButton" class="btn btn-light">Register</button>
                     </form>
@@ -147,9 +150,18 @@
                             <label for="deadline" class="form-label">Deadline:</label>
                             <input type="datetime-local" class="form-control" id="deadline" name="deadline">
                         </div>
+                        <div class="mb-3">
+                            <label for="timeslot1" class="form-label">Timeslot 1:</label>
+                            <input type="datetime-local" class="form-control" id="timeslot1" name="timeslot1">
+                        </div>
+                        <!-- Hier wird ein weiterer Timeslot eingegfügt -->
+                        <span id="timeslots"></span>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal"><i class="far fa-window-close"></i> Cancel</button>
-                            <button type="button" class="btn btn-light" id="sendAppoint"><i class="fas fa-sign-in-alt"></i> Create</button>
+                            <button type="button" class="btn btn-light" id="addNewTimeslot">Add a Timeslot</button>
+                        </div> <br>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal"></i> Cancel</button>
+                            <button type="button" class="btn btn-light" id="sendAppoint"></i> Create</button>
                         </div>
                     </form>
                 </div>
