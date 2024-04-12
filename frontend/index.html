@@ -18,7 +18,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="index.php">
+            <a class="navbar-brand" href="index.html">
             <div class="logofont">
                 <img id="logo" src="img/logo.svg">PlanDemic
             </div>
@@ -29,7 +29,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                <a class="nav-link" aria-current="page" id="navHome" href="index.php">Home</a>
+                <a class="nav-link" aria-current="page" id="navHome" href="index.html">Home</a>
                 </li>
                 <li class="nav-item">
                 <a class="nav-link" id="navNew" data-bs-toggle="modal" data-bs-target="#newAppointmentModal">New</a> 
@@ -43,24 +43,38 @@
     <!-- Eine Liste mit den Terminen wird via JS erstellt (Jeder Termin eine eigene Bootstrap Card)-->
     <h1>Appointments Overview</h1>
 
-    <div class="card appointment">
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">Date:</li>
-            <li class="list-group-item">Title:</li>
-            <li class="list-group-item">Status:</li>
-        </ul>
+    <div id="appointment-container">
+
+        <div id="appointment2">
+            <div class="card text-center appointment-card appointment-active">
+                <div class="card-header appointment-header">
+                    <h2 class="appointment-title">First Appointment</h2>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Status: Active</h5>
+                    <h5 class="card-title">Open until: Datum</h5>
+                    <h5 class="card-title">Votes: 0</h5>
+                </div>
+            </div>
+        </div>
+
+        <div id="appointment2">
+            <div class="card text-center appointment-card appointment-inactive">
+                <div class="card-header">
+                    <h2 class="appointment-title">Second Appointment</h2>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Status: Inactive</h5>
+                    <h5 class="card-title">Closed since: Datum</h5>
+                    <h5 class="card-title">Votes: 0</h5>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <div class="card appointment">
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">Date:</li>
-            <li class="list-group-item">Title:</li>
-            <li class="list-group-item">Status:</li>
-            <li class="list-group-item">Description:</li>
-            <li class="list-group-item">Duration:</li>
-            <li class="list-group-item">Deadline:</li>
-        </ul>
-    </div>
+
+
 
 
     <!-- New Appointment Modal -->
