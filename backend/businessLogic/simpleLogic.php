@@ -14,7 +14,7 @@ class requestLogic
 		    case 'test':
 		        $result = appoint::getTestList();
                 break;
-			case 'getAppointList':
+			/*case 'getAppointList':
 				$result = appoint::getList($param ? $param['limit'] : NULL);
 				break;
 			case 'newAppoint':
@@ -42,7 +42,7 @@ class requestLogic
 				}
 
 				$result = appoint::newComment($param['content'], $param['appoint_id'], $_SESSION['user_id']);
-				break;
+				break;*/
 			default:
 				$result = null;
 		}
