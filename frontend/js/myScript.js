@@ -13,12 +13,6 @@ $(document).ready(function() {
 
     let timeslotsCounter = 1;
 
-    // Event listeners for UI elements
-    $('#navLogin').on('click', function(event) {
-        event.preventDefault();
-        $('#loginModal').modal('show');
-    });
-
     $('#navNew').on('click', function(event) {
         event.preventDefault();
         $('#newAppointmentModal').modal('show');

@@ -34,9 +34,6 @@
                 <li class="nav-item">
                 <a class="nav-link" id="navNew" data-bs-toggle="modal" data-bs-target="#newAppointmentModal">New</a> 
                 </li>
-                <li class="nav-item">
-                <a class="nav-link" id="navLogin" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
-                </li>
             </ul>
             </div>
         </div>
@@ -64,64 +61,6 @@
             <li class="list-group-item">Deadline:</li>
         </ul>
     </div>
-
-
-    <!-- Login Modal -->
-    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="loginModalLabel">Login</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="loginForm">
-                <div class="mb-3">
-                    <label for="loginEmail" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp" required>
-                </div>
-                <div class="mb-3">
-                    <label for="loginPassword" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="loginPassword" required>
-                </div>
-                <!--If not logged in register-->
-                <p>Not registered yet? Register <a id="registerLink" class="highlight-link" data-bs-toggle="modal" data-bs-target="#registerModal">here!</a></p>
-                <button type="submit" id="loginButton" class="btn btn-light">Login</button>
-                </form>
-            </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Register Modal -->
-    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="registerModalLabel">Register</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="registerForm">
-                        <div class="mb-3">
-                            <label for="registerEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="registerEmail" aria-describedby="emailHelp">
-                        </div>
-                        <div class="mb-3">
-                            <label for="registerPassword1" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="registerPassword">
-                        </div>
-                        <div class="mb-3">
-                            <label for="registerPassword2" class="form-label">Repeat Password</label>
-                            <input type="password" class="form-control" id="registerPassword2"> <br>
-                        </div>
-                        <button type="submit" id="registerButton" class="btn btn-light">Register</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
 
     <!-- New Appointment Modal -->
