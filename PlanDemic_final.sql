@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Erstellungszeit: 12. Apr 2024 um 10:45
+-- Erstellungszeit: 12. Apr 2024 um 11:46
 -- Server-Version: 10.4.28-MariaDB
 -- PHP-Version: 8.2.4
 
@@ -36,6 +36,14 @@ CREATE TABLE `appointment` (
   `location` varchar(100) NOT NULL,
   `creator` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Daten für Tabelle `appointment`
+--
+
+INSERT INTO `appointment` (`id`, `thema`, `descr`, `duration`, `deadline`, `location`, `creator`) VALUES
+(1, 'Erster Termin', 'Dies ist eine description für Termin 1', 6, '2024-04-18 10:00:00', 'Fh Technikum', 'Lukas'),
+(2, 'Abgelaufen Test 2', 'Dies ist eine description für Abgelaufen Test 2', 60, '2024-04-11 10:00:00', 'Wien', 'Max');
 
 -- --------------------------------------------------------
 
@@ -114,7 +122,7 @@ ALTER TABLE `vote`
 -- AUTO_INCREMENT für Tabelle `appointment`
 --
 ALTER TABLE `appointment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT für Tabelle `comment`
