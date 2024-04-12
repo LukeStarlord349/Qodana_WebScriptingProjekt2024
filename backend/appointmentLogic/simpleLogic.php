@@ -12,7 +12,7 @@ class RequestLogic {
         $result = null;
         switch ($method) {
             case 'getTestData':  // Updated to match the AJAX request
-                $result = $this->dh->getTestList();
+                $result = $this->dh->getAppointmentData();
                 break;
             default:
                 // It's good practice to handle unexpected method values

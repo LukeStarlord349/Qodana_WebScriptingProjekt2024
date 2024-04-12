@@ -4,7 +4,7 @@ include("appointmentLogic/mysqli_init.php");
 
 class Datahandler
 {
-    public static function getTestList() {
+    public static function getAppointmentData() {
         $conn = new mysqli_init();
         		if ($conn->connect_error) {
         			die("Connection failed: ".$conn->connect_error);
