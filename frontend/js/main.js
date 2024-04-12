@@ -172,6 +172,7 @@ function getAppointmentTimeslots(appointmentId, validDate) {
                 `);
                 }
             }
+            if(validDate) {
             // Inputfeld für Name und submit button für voten
             $('#modalBody').append(`
                 <div class="comment-section"><br>
@@ -179,6 +180,7 @@ function getAppointmentTimeslots(appointmentId, validDate) {
                     <button type="button" class="btn btn-secondary" onclick="submitTimeslotsSelection()">Submit Vote</button>
                 </div>
                 `);
+            }
 
             
             // Zeige die Kommentare an
