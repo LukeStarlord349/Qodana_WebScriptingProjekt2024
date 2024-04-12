@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Erstellungszeit: 12. Apr 2024 um 11:46
--- Server-Version: 10.4.28-MariaDB
--- PHP-Version: 8.2.4
+-- Host: 127.0.0.1
+-- Erstellungszeit: 12. Apr 2024 um 17:46
+-- Server-Version: 10.4.32-MariaDB
+-- PHP-Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Datenbank: `PlanDemic`
+-- Datenbank: `plandemic`
 --
 
 -- --------------------------------------------------------
@@ -59,6 +59,14 @@ CREATE TABLE `comment` (
   `author` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Daten für Tabelle `comment`
+--
+
+INSERT INTO `comment` (`id`, `appoint_id`, `timestamp`, `content`, `author`) VALUES
+(1, 1, '2024-04-12 15:01:53', 'Hallo, ich bin ein Kommentar. Servus!', 'Max'),
+(2, 2, '2024-04-12 15:02:20', 'Seas, ich bin noch ein Kommentar!', 'Sepp');
+
 -- --------------------------------------------------------
 
 --
@@ -70,6 +78,16 @@ CREATE TABLE `timeslot` (
   `appoint_id` int(11) NOT NULL,
   `start_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Daten für Tabelle `timeslot`
+--
+
+INSERT INTO `timeslot` (`id`, `appoint_id`, `start_time`) VALUES
+(1, 1, '2024-04-30 15:02:29'),
+(2, 1, '2024-05-01 15:02:29'),
+(3, 2, '2024-04-10 15:04:08'),
+(4, 2, '2024-04-08 15:04:08');
 
 -- --------------------------------------------------------
 
@@ -128,13 +146,13 @@ ALTER TABLE `appointment`
 -- AUTO_INCREMENT für Tabelle `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT für Tabelle `timeslot`
 --
 ALTER TABLE `timeslot`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT für Tabelle `vote`

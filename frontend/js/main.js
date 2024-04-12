@@ -94,7 +94,6 @@ function getAppointmentDetails(appointmentId) {
         data: { method: "getAppointmentDetails", param: appointmentId },
         dataType: "json",
         success: function(response) {
-            console.log("Details für Termin", appointmentId, ":", response);
 
             let title = response[0].thema;
             let description = response[0].descr;
@@ -106,10 +105,10 @@ function getAppointmentDetails(appointmentId) {
             // Aktualisieren der Modal-Elemente
             $('#modalTitle').text(title);
             $('#modalBody').html(`
-                <p>Termin erstellt von: ${creator}</p>
-                <p>Beschreibung: ${description}</p>
+                <p>Created by: ${creator}</p>
+                <p>Description: ${description}</p>
                 <p>Deadline: ${deadline}</p>
-                <p>Dauer: ${duration} Minuten</p>
+                <p>Duration: ${duration} Minuten</p>
                 <p>Status: ${validDate ? "Aktiv" : "Abgelaufen"}</p>
             `);
 
@@ -119,6 +118,9 @@ function getAppointmentDetails(appointmentId) {
             } else {
                 $('#modalContent').css('background-color', ''); // Zurücksetzen auf Standard
             }
+
+            // Zeige die Zeitslots und Kommentare an
+            getAppointmentTimeslots(appointmentId, validDate);
 
             // Zeige das Modal an
             $('#appointmentModal').modal('show');
@@ -136,13 +138,104 @@ function getAppointmentDetails(appointmentId) {
 }
 
 // Funktion zum Abrufen der verfügbaren Zeitslots für einen Termin
-function getAppointmentTimeslots(appointmentId) {
+function getAppointmentTimeslots(appointmentId, validDate) {
+    $.ajax({
+        type: "GET",
+        url: "../backend/serviceHandler.php",
+        data: { method: "getAppointmentTimeslots", param: appointmentId },
+        dataType: "json",
+        success: function(response) {
+            let timeslots = response;
+
+            $("#modalBody").append("<h5>Available Timeslots</h5>");
+
+            for(let i = 0; i < timeslots.length; i++) {
+                let startTime = timeslots[i].start_time;
+                let timeSlotId = timeslots[i].id;
+
+                // Wenn das Datum abgelaufen ist, werden die Checkboxen nicht angezeigt
+                if(validDate) {
+                    $('#modalBody').append(`
+                    <div class="timeslot-item">
+                        <span>Time Slot ${i}: ${startTime}</span>
+                        <input type="checkbox" id="check${timeSlotId}" name="timeslotCheck">
+                        <label for="check${timeSlotId}">Select</label>
+                    </div>
+                `)
+                }
+                else {
+                // Zeige die Timeslots an
+                $('#modalBody').append(`
+                    <div class="timeslot-item">
+                        <span>Time Slot ${i}: ${startTime}</span>
+                    </div>
+                `);
+                }
+            }
+            // Inputfeld für Name und submit button für voten
+            $('#modalBody').append(`
+                <div class="comment-section"><br>
+                    <input type="text" id="userName" class="form-control" placeholder="Your name" /><br>
+                    <button type="button" class="btn btn-secondary" onclick="submitTimeslotsSelection()">Submit Vote</button>
+                </div>
+                `);
+
+            
+            // Zeige die Kommentare an
+            getAppointmentComments(appointmentId, validDate);
+
+        },
+        error: function(xhr, status, error) {
+            let message = "Failed to load appointment timeslots: " + error;
+            showErrorModal(message);
+        }
+    });
 
 }
 
 // Funktion zum Abrufen der Kommentare für einen Termin
-function getAppointmentComments(appointmentId) {
+function getAppointmentComments(appointmentId, validDate) {
+    $.ajax({
+        type: "GET",
+        url: "../backend/serviceHandler.php",
+        data: { method: "getAppointmentComments", param: appointmentId },
+        dataType: "json",
+        success: function(response) {
+            let comments = response;
 
+            $("#modalBody").append("<br><h5>Comments:</h5>");
+
+            $("#modalBody").append(`
+            <div class="new-comment-section">
+                <input type="text" id="commenterName" class="form-control" placeholder="Your name" /><br>
+                <textarea id="newCommentText" class="form-control" placeholder="Write a comment..." rows="3"></textarea><br>
+                <button type="button" class="btn btn-secondary" onclick="submitComment(${appointmentId})">Submit Comment</button><br><br>
+            </div>
+        `);
+
+            for(let i = 0; i < comments.length; i++) {
+
+                let commentId = comments[i].id;
+                let author = comments[i].author;
+                let content = comments[i].content;
+                let commentTime = comments[i].timestamp;
+
+
+                // Zeige die Kommentare an
+                $('#modalBody').append(`
+                    <div class="comment-item">
+                        <p>${author} (${commentTime}): <br>${content}</p>
+                    </div>
+                `);
+            
+            }
+
+        },
+        error: function(xhr, status, error) {
+            let message = "Failed to load appointment timeslots: " + error;
+            showErrorModal(message);
+        }
+    });
 }
 
 
