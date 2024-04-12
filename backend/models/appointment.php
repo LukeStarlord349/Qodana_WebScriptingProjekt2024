@@ -10,6 +10,7 @@ class appoint
         		}
         $sql = "SELECT * FROM appointment";
         $stmt = $conn->prepare($sql);
+        $stmt->execute();
         $result = $stmt->get_result();
 
         $array = array();
