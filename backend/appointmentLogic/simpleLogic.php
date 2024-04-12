@@ -8,19 +8,21 @@ class RequestLogic {
         $this->dh = new DataHandler();
     }
 
-    function handleRequest($method, $param) {
-        $result = null;
-        switch ($method) {
-            case 'getTestData':  // Updated to match the AJAX request
-                $result = $this->dh->getAppointmentData();
-                break;
-            default:
-                // It's good practice to handle unexpected method values
-                $result = "Method not supported";
-                break;
-        }
-        return $result;
-    }
+	function handleRequest($method, $param) {
+		$result = null;
+		switch ($method) {
+			case 'getAppointmentData':
+				$result = $this->dh->getAppointmentData();
+				break;
+			case 'getAppointmentDetails':
+				$result = $this->dh->getAppointmentDetails($param);
+				break;
+			default:
+				$result = "Method not supported";
+				break;
+		}
+		return $result;
+	}
 }
 
 

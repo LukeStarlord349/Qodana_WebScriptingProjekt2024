@@ -4,7 +4,7 @@ $(document).ready(function() {
     let timeslotsCounter = 1;
 
     $('#navNew').on('click', function(event) {
-        event.preventDefault();
+        $("#newAppointmentModal").hide();
         $('#newAppointmentModal').modal('show'); // Modal für neue Termine anzeigen
     });
 
@@ -13,35 +13,30 @@ $(document).ready(function() {
         addNewTimeslot(timeslotsCounter); // `timeslotsCounter` als Argument übergeben
     });
 
+    // Ajax call für das Anzeigen der Termine auf der Index-Seite
     getAppointmentData();
 });
 
-
+// Funktion zum Abrufen der Termin-Daten für die Index-Seite
 function getAppointmentData() {
     $.ajax({
         type: "GET",
         url: "../backend/serviceHandler.php",
         cache: false,
-        data: {method: "getTestData" , param: "test"},
+        data: {method: "getAppointmentData" , param: "test"},
         dataType: "json",
         success: function(response) {
-            console.log(response);
-
             let appointments = response;
 
             for (let i = 0; i < appointments.length; i++) {
                 let id = appointments[i].id;
                 let title = appointments[i].thema;
-                let creator = appointments[i].creator;
-                let description = appointments[i].descr;
-                let duration = appointments[i].duration;
-                let location = appointments[i].location;
                 let deadline = appointments[i].deadline;
             
-                console.log(deadline);
+                // Statusüberprüfung
+                let validDate = checkIfValidDate(deadline);
 
-                validDate = checkIfValidDate(deadline);
-
+                // Zeige den Termin als "Active" oder "Expired" an, abhängig vom Status "validDate
                 if (validDate) {
                     let status = "Active";
                     let appointmentItem = $(` 
@@ -77,7 +72,12 @@ function getAppointmentData() {
                     `);
                     $("#appointment-container").append(appointmentItem); 
                 }
+                // Eventlistener für die Detailansicht der Termine hinzufügen
+                $("#appointment" + id).on('click', function() {
+                    getAppointmentDetails(id);
+            });
             }
+
         },
         error: function(xhr, status, error) {
             let message = "Couldn't load the data! " + error;
@@ -85,6 +85,66 @@ function getAppointmentData() {
         }
     })
 }
+
+// Funktion zum Abrufen der Detailansicht eines Termins
+function getAppointmentDetails(appointmentId) {
+    $.ajax({
+        type: "GET",
+        url: "../backend/serviceHandler.php",
+        data: { method: "getAppointmentDetails", param: appointmentId },
+        dataType: "json",
+        success: function(response) {
+            console.log("Details für Termin", appointmentId, ":", response);
+
+            let title = response[0].thema;
+            let description = response[0].descr;
+            let deadline = response[0].deadline;
+            let creator = response[0].creator;
+            let duration = response[0].duration;
+            let validDate = checkIfValidDate(deadline);
+
+            // Aktualisieren der Modal-Elemente
+            $('#modalTitle').text(title);
+            $('#modalBody').html(`
+                <p>Termin erstellt von: ${creator}</p>
+                <p>Beschreibung: ${description}</p>
+                <p>Deadline: ${deadline}</p>
+                <p>Dauer: ${duration} Minuten</p>
+                <p>Status: ${validDate ? "Aktiv" : "Abgelaufen"}</p>
+            `);
+
+            // Ändere die Hintergrundfarbe, wenn das Datum ungültig ist
+            if (!validDate) {
+                $('#modalContent').css('background-color', 'rgba(180, 10, 10)');
+            } else {
+                $('#modalContent').css('background-color', ''); // Zurücksetzen auf Standard
+            }
+
+            // Zeige das Modal an
+            $('#appointmentModal').modal('show');
+
+            // Seite neu laden, wenn das Modal geschlossen wird
+            $('.btn-close, .btn-secondary').on('click', function() {
+                location.reload();
+            });
+        },
+        error: function(xhr, status, error) {
+            let message = "Failed to load appointment details: " + error;
+            showErrorModal(message);
+        }
+    });
+}
+
+// Funktion zum Abrufen der verfügbaren Zeitslots für einen Termin
+function getAppointmentTimeslots(appointmentId) {
+
+}
+
+// Funktion zum Abrufen der Kommentare für einen Termin
+function getAppointmentComments(appointmentId) {
+
+}
+
 
 // Überprüfen, ob der Termin noch aktiv oder schon abgelaufen ist
 function checkIfValidDate (deadline) {
