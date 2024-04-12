@@ -1,5 +1,5 @@
 <?php
-include("businesslogic/simpleLogic.php");
+include("appointmentLogic/simpleLogic.php");
 
 $param = "";
 $method = "";
@@ -7,7 +7,7 @@ $method = "";
 isset($_GET["method"]) ? $method = $_GET["method"] : false;
 isset($_GET["param"]) ? $param = $_GET["param"] : false;
 
-$logic = new SimpleLogic();
+$logic = new RequestLogic();
 $result = $logic->handleRequest($method, $param);
 if ($result == null) {
     response("GET", 400, null);

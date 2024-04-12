@@ -1,8 +1,34 @@
 <?php
+include("db/dataHandler.php");
+
+class RequestLogic {
+    private $dh;
+
+    function __construct() {
+        $this->dh = new DataHandler();
+    }
+
+    function handleRequest($method, $param) {
+        $result = null;
+        switch ($method) {
+            case 'getTestData':  // Updated to match the AJAX request
+                $result = $this->dh->getTestList();
+                break;
+            default:
+                // It's good practice to handle unexpected method values
+                $result = "Method not supported";
+                break;
+        }
+        return $result;
+    }
+}
+
+
+/* <?php
 include("./models/appointment.php");
-class requestLogic
+class RequestLogic
 {
-	private $id;
+	private $dh;
 	function __construct()
         {
             $this->dh = new DataHandler();
@@ -12,7 +38,7 @@ class requestLogic
 		switch ($method)
 		{
 		    case 'test':
-		        $result = appoint::getTestList();
+		        $result = $this->dh->getTestList();
                 break;
 			/*case 'getAppointList':
 				$result = appoint::getList($param ? $param['limit'] : NULL);
@@ -42,11 +68,11 @@ class requestLogic
 				}
 
 				$result = appoint::newComment($param['content'], $param['appoint_id'], $_SESSION['user_id']);
-				break;*/
+				break;
 			default:
 				$result = null;
 		}
 
 		return $result;
 	}
-}
+} */

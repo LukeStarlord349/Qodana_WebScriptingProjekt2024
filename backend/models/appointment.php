@@ -1,27 +1,22 @@
 <?php
-include("./businesslogic/mysqli_init.php");
-class appoint
+class appointment
 {
+	public $id;
+	public $thema;
+	public $descr;
+	public $duration;
+	public $deadline;
+	public $location;
+	public $creator;
 
-    public static function getTestList() {
-        $conn = new mysqli_init();
-        		if ($conn->connect_error) {
-        			die("Connection failed: ".$conn->connect_error);
-        		}
-        $sql = "SELECT * FROM appointment";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        $array = array();
-            while($row = $result->fetch_assoc()) {
-                $array[] = $row;
-            }
-
-        $stmt->close();
-        $conn->close();
-
-        return $array;
+	function __construct($id, $thema, $descr, $duration, $deadline, $location, $creator) {
+        $this->id = $id;
+		$this->thema = $thema;
+		$this->descr = $descr;
+		$this->duration = $duration;
+		$this->deadline = $deadline;
+		$this->location = $location;
+		$this->creator = $creator;
     }
 
 	/*public static function getList($limit = NULL)
@@ -358,4 +353,5 @@ class appoint
 
 		return $result;
 	}
-}*/
+*/
+}

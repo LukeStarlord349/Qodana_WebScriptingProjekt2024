@@ -77,12 +77,20 @@ a:active {
 
 /* Appointment-Card */
 
-
 .appointment-card{
   color: lightgray;
   border-radius: 30px;
   margin: 40px;
   box-shadow: 6px 6px 4px gray;
+  cursor: pointer;
+}
+
+.appointment-title {
+  color: lightgrey;
+  font-size: 22px;
+}
+.appointment-card-title {
+  font-size: 16px;
 }
 
 .appointment-active {
@@ -94,7 +102,3 @@ a:active {
   background-color: rgba(196, 22, 22, 0.738)
 }
 
-.appointment-title {
-  color: lightgrey;
-  font-size: 22px;
-}
