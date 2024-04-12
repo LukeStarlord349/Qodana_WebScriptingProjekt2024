@@ -11,6 +11,9 @@ class requestLogic
 	function handleRequest($method, $param) {
 		switch ($method)
 		{
+		    case 'test':
+		        $result = appoint::getTestList();
+                break;
 			case 'getAppointList':
 				$result = appoint::getList($param ? $param['limit'] : NULL);
 				break;

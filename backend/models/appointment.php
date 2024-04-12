@@ -3,7 +3,27 @@ include("./businesslogic/mysqli_init.php");
 class appoint
 {
 
-	public static function getList($limit = NULL)
+    public static function getTestList() {
+        $conn = new mysqli_init();
+        		if ($conn->connect_error) {
+        			die("Connection failed: ".$conn->connect_error);
+        		}
+        $sql = "SELECT * FROM appointment";
+        $stmt = $conn->prepare($sql);
+        $result = $stmt->get_result();
+
+        $array = array();
+            while($row = $result->fetch_assoc()) {
+                $array[] = $row;
+            }
+
+        $stmt->close();
+        $conn->close();
+
+        return $array;
+    }
+
+	/*public static function getList($limit = NULL)
 	{
 		$conn = new mysqli_init();
 		if ($conn->connect_error) {
@@ -30,7 +50,7 @@ class appoint
 		return $array;
 	}
 
-	/*public static function newAppoint($timeslots, $title, $descr, $duration, $deadline, $user_id)
+	public static function newAppoint($timeslots, $title, $descr, $duration, $deadline, $user_id)
 	{
 		$conn = new mysqli_init();
 		if ($conn->connect_error) {
