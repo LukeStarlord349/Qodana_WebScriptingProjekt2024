@@ -1,16 +1,14 @@
 $(document).ready(function() {
-    // Code abhängig von DOM-Bereitschaft hier
-
     let timeslotsCounter = 1;
 
     $('#navNew').on('click', function(event) {
         $("#newAppointmentModal").hide();
-        $('#newAppointmentModal').modal('show'); // Modal für neue Termine anzeigen
+        $('#newAppointmentModal').modal('show'); 
     });
 
     $("#addNewTimeslot").on('click', function() {
         timeslotsCounter++;
-        addNewTimeslot(timeslotsCounter); // `timeslotsCounter` als Argument übergeben
+        addNewTimeslot(timeslotsCounter);
     });
 
     // Ajax call für das Anzeigen der Termine auf der Index-Seite
@@ -75,9 +73,8 @@ function getAppointmentData() {
                 // Eventlistener für die Detailansicht der Termine hinzufügen
                 $("#appointment" + id).on('click', function() {
                     getAppointmentDetails(id);
-            });
+                });
             }
-
         },
         error: function(xhr, status, error) {
             let message = "Couldn't load the data! " + error;
@@ -182,10 +179,8 @@ function getAppointmentTimeslots(appointmentId, validDate) {
                 `);
             }
 
-            
             // Zeige die Kommentare an
             getAppointmentComments(appointmentId, validDate);
-
         },
         error: function(xhr, status, error) {
             let message = "Failed to load appointment timeslots: " + error;
@@ -213,7 +208,7 @@ function getAppointmentComments(appointmentId, validDate) {
                 <textarea id="newCommentText" class="form-control" placeholder="Write a comment..." rows="3"></textarea><br>
                 <button type="button" class="btn btn-secondary" onclick="submitComment(${appointmentId})">Submit Comment</button><br><br>
             </div>
-        `);
+            `);
 
             for(let i = 0; i < comments.length; i++) {
 
@@ -229,9 +224,7 @@ function getAppointmentComments(appointmentId, validDate) {
                         <p>${author} (${commentTime}): <br>${content}</p>
                     </div>
                 `);
-            
             }
-
         },
         error: function(xhr, status, error) {
             let message = "Failed to load appointment timeslots: " + error;
@@ -256,7 +249,6 @@ function checkIfValidDate (deadline) {
 
 // New timeslots erstellen
 function addNewTimeslot(timeslotsCounter) {
-    console.log("Neuen Zeitslot hinzufügen", timeslotsCounter); // Protokollierung zur Überwachung des Wertes
     $("#timeslots").append(`
     <div class="mb-3">
         <label for="timeslot${timeslotsCounter}" class="form-label">Zeitslot ${timeslotsCounter}:</label>
@@ -268,22 +260,22 @@ function addNewTimeslot(timeslotsCounter) {
 function showErrorModal(message) {
     // Erstelle ein jQuery-Objekt aus dem HTML-String
     let myModalElement = $(`
-    <div class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Error</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Error</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                </div>
+                </div>
             </div>
-            <div class="modal-body">
-                <p></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
-            </div>
-            </div>
-        </div>
-    </div>`);
+        </div>`);
     // Setze den Nachrichtentext
     myModalElement.find('.modal-body p').text(message);
     // Erstelle eine Bootstrap-Modal-Instanz aus dem jQuery-Objekt
