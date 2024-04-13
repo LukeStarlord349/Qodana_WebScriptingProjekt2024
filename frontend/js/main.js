@@ -108,8 +108,8 @@ function getAppointmentDetails(appointmentId) {
                 <p>Created by: ${creator}</p>
                 <p>Description: ${description}</p>
                 <p>Deadline: ${deadline}</p>
-                <p>Duration: ${duration} Minuten</p>
-                <p>Status: ${validDate ? "Aktiv" : "Abgelaufen"}</p>
+                <p>Duration: ${duration} Minutes</p>
+                <p>Status: ${validDate ? "Active" : "Expired"}</p>
             `);
 
             // Ändere die Hintergrundfarbe, wenn das Datum ungültig ist
