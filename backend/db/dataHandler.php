@@ -2,7 +2,6 @@
 include("models/appointment.php");
 include("models/timeslot.php");
 include("models/comment.php");
-include("models/vote.php");
 include("appointmentLogic/mysqli_init.php");
 
 class Datahandler
@@ -69,22 +68,24 @@ class Datahandler
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
-        $sql = "SELECT * FROM timeslot WHERE appoint_id = ?";
+        $sql = "SELECT t.id, t.appoint_id, t.start_time, COUNT(v.id) AS vote_count 
+                FROM timeslot t 
+                LEFT JOIN vote v ON t.id = v.timeslot_id 
+                WHERE t.appoint_id = ? 
+                GROUP BY t.id";
         if ($stmt = $conn->prepare($sql)) {
             $stmt->bind_param("i", $appointmentId);
             if ($stmt->execute()) {
                 $result = $stmt->get_result();
-                $timeslots = [];  
+                $timeslots = [];
                 while ($row = $result->fetch_assoc()) {
                     $timeslot = new timeslot(
                         $row['id'],
                         $row['appoint_id'],
-                        $row['start_time']
+                        $row['start_time'],
+                        $row['vote_count']  
                     );
                     $timeslots[] = $timeslot;
-                }
-                if (empty($timeslots)) {
-                    $timeslots = ["message" => "No timeslots found for this appointment."];
                 }
                 $stmt->close();
             } else {

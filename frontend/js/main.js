@@ -152,12 +152,14 @@ function getAppointmentTimeslots(appointmentId, validDate) {
             for(let i = 0; i < timeslots.length; i++) {
                 let startTime = timeslots[i].start_time;
                 let timeSlotId = timeslots[i].id;
+                let voteCount = timeslots[i].vote_count;
+                let timeslotCount = i + 1;
 
                 // Wenn das Datum abgelaufen ist, werden die Checkboxen nicht angezeigt
                 if(validDate) {
                     $('#modalBody').append(`
                     <div class="timeslot-item">
-                        <span>Time Slot ${i}: ${startTime}</span>
+                        <span>${timeslotCount}.) ${startTime} Votes: ${voteCount}</span>
                         <input type="checkbox" id="check${timeSlotId}" name="timeslotCheck">
                         <label for="check${timeSlotId}">Select</label>
                     </div>
@@ -167,7 +169,7 @@ function getAppointmentTimeslots(appointmentId, validDate) {
                 // Zeige die Timeslots an
                 $('#modalBody').append(`
                     <div class="timeslot-item">
-                        <span>Time Slot ${i}: ${startTime}</span>
+                        <span>Time Slot ${timeslotCount}: ${startTime}</span>
                     </div>
                 `);
                 }
@@ -190,7 +192,6 @@ function getAppointmentTimeslots(appointmentId, validDate) {
             showErrorModal(message);
         }
     });
-
 }
 
 // Funktion zum Abrufen der Kommentare für einen Termin
