@@ -159,7 +159,7 @@ function getAppointmentTimeslots(appointmentId, validDate) {
                 if(validDate) {
                     $('#modalBody').append(`
                     <div class="timeslot-item">
-                        <span>${timeslotCount}.) ${startTime} Votes: ${voteCount}</span>
+                        <span>${timeslotCount}.) ${startTime} || Votes: ${voteCount} ||</span>
                         <input type="checkbox" id="check${timeSlotId}" name="timeslotCheck">
                         <label for="check${timeSlotId}">Select</label>
                     </div>
@@ -169,7 +169,7 @@ function getAppointmentTimeslots(appointmentId, validDate) {
                 // Zeige die Timeslots an
                 $('#modalBody').append(`
                     <div class="timeslot-item">
-                        <span>Time Slot ${timeslotCount}: ${startTime}</span>
+                        <span>${timeslotCount}.) ${startTime}</span>
                     </div>
                 `);
                 }
