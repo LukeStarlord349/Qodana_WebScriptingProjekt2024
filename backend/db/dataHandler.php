@@ -1,29 +1,37 @@
 <?php
 include("models/appointment.php");
+include("models/timeslot.php");
+include("models/comment.php");
+include("models/vote.php");
 include("appointmentLogic/mysqli_init.php");
 
 class Datahandler
 {
     public static function getAppointmentData() {
         $conn = new mysqli_init();
-        		if ($conn->connect_error) {
-        			die("Connection failed: ".$conn->connect_error);
-        		}
-        $sql = "SELECT id, thema, deadline FROM appointment";
+        if ($conn->connect_error) {
+            die("Connection failed: ".$conn->connect_error);
+        }
+        $sql = "SELECT * FROM appointment"; // Alle appointments
+        $appointments = [];
         if ($stmt = $conn->prepare($sql)) {
             $stmt->execute();
             $result = $stmt->get_result();
-            $array = [];
             while ($row = $result->fetch_assoc()) {
-                $array[] = $row;
+                $appointments[] = new appointment(
+                    $row['id'],
+                    $row['thema'],
+                    $row['descr'],
+                    $row['duration'],
+                    $row['deadline'],
+                    $row['location'],
+                    $row['creator']
+                );
             }
             $stmt->close();
-        } else {
-            // Handle preparation error
-            return "Error preparing statement: " . $conn->error;
         }
         $conn->close();
-        return $array;
+        return $appointments;
     }
 
     public static function getAppointmentDetails($appointmentId) {
@@ -31,21 +39,29 @@ class Datahandler
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
-        $sql = "SELECT * FROM appointment WHERE id = ?"; // Use a placeholder for the id
+        $sql = "SELECT * FROM appointment WHERE id = ?";
         if ($stmt = $conn->prepare($sql)) {
-            $stmt->bind_param("i", $appointmentId); // Bind the integer parameter
+            $stmt->bind_param("i", $appointmentId);
             $stmt->execute();
             $result = $stmt->get_result();
-            $array = [];
-            while ($row = $result->fetch_assoc()) {
-                $array[] = $row;
+            $appointment = null;  // Initialize as null to handle cases where no data is found
+            if ($row = $result->fetch_assoc()) {
+                $appointment = new appointment(
+                    $row['id'],
+                    $row['thema'],
+                    $row['descr'],
+                    $row['duration'],
+                    $row['deadline'],
+                    $row['location'],
+                    $row['creator']
+                );
             }
             $stmt->close();
         } else {
             return "Error preparing statement: " . $conn->error;
         }
         $conn->close();
-        return $array;
+        return $appointment;  // Return either an appointment object or null
     }
 
     public static function getAppointmentTimeslots($appointmentId) {
@@ -53,27 +69,32 @@ class Datahandler
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
-        $sql = "SELECT * FROM timeslot WHERE appoint_id = ?"; // Use a placeholder for the id
+        $sql = "SELECT * FROM timeslot WHERE appoint_id = ?";
         if ($stmt = $conn->prepare($sql)) {
-            $stmt->bind_param("i", $appointmentId); // Bind the integer parameter
+            $stmt->bind_param("i", $appointmentId);
             if ($stmt->execute()) {
                 $result = $stmt->get_result();
-                $array = [];
+                $timeslots = [];  
                 while ($row = $result->fetch_assoc()) {
-                    $array[] = $row;
+                    $timeslot = new timeslot(
+                        $row['id'],
+                        $row['appoint_id'],
+                        $row['start_time']
+                    );
+                    $timeslots[] = $timeslot;
                 }
-                if (empty($array)) {
-                    $array = ["message" => "No timeslots found for this appointment."];
+                if (empty($timeslots)) {
+                    $timeslots = ["message" => "No timeslots found for this appointment."];
                 }
+                $stmt->close();
             } else {
-                $array = ["error" => "Error executing statement: " . $stmt->error];
+                $timeslots = ["error" => "Error executing statement: " . $stmt->error];
             }
-            $stmt->close();
         } else {
-            $array = ["error" => "Error preparing statement: " . $conn->error];
+            $timeslots = ["error" => "Error preparing statement: " . $conn->error];
         }
         $conn->close();
-        return $array;
+        return $timeslots;
     }
 
     public static function getAppointmentComments($appointmentId) {
@@ -81,26 +102,33 @@ class Datahandler
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
-        $sql = "SELECT * FROM comment WHERE appoint_id = ?"; // Use a placeholder for the id
+        $sql = "SELECT * FROM comment WHERE appoint_id = ?";
         if ($stmt = $conn->prepare($sql)) {
             $stmt->bind_param("i", $appointmentId); // Bind the integer parameter
             if ($stmt->execute()) {
                 $result = $stmt->get_result();
-                $array = [];
+                $comments = [];  // Use an array to store comment objects
                 while ($row = $result->fetch_assoc()) {
-                    $array[] = $row;
+                    $comment = new comment(
+                        $row['id'],
+                        $row['appoint_id'],
+                        $row['timestamp'],
+                        $row['content'],
+                        $row['author']
+                    );
+                    $comments[] = $comment;
                 }
-                if (empty($array)) {
-                    $array = ["message" => "No Comments found for this appointment."];
+                if (empty($comments)) {
+                    $comments = ["message" => "No Comments found for this appointment."];
                 }
+                $stmt->close();
             } else {
-                $array = ["error" => "Error executing statement: " . $stmt->error];
+                $comments = ["error" => "Error executing statement: " . $stmt->error];
             }
-            $stmt->close();
         } else {
-            $array = ["error" => "Error preparing statement: " . $conn->error];
+            $comments = ["error" => "Error preparing statement: " . $conn->error];
         }
         $conn->close();
-        return $array;
+        return $comments;
     }
 }

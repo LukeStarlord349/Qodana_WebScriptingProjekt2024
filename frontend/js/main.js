@@ -91,36 +91,39 @@ function getAppointmentDetails(appointmentId) {
         data: { method: "getAppointmentDetails", param: appointmentId },
         dataType: "json",
         success: function(response) {
+            if (response) {
+                let title = response.thema;
+                let description = response.descr;
+                let deadline = response.deadline;
+                let creator = response.creator;
+                let duration = response.duration;
+                let validDate = checkIfValidDate(deadline);
 
-            let title = response[0].thema;
-            let description = response[0].descr;
-            let deadline = response[0].deadline;
-            let creator = response[0].creator;
-            let duration = response[0].duration;
-            let validDate = checkIfValidDate(deadline);
+                // Aktualisieren der Modal-Elemente
+                $('#modalTitle').text(title);
+                $('#modalBody').html(`
+                    <p>Created by: ${creator}</p>
+                    <p>Description: ${description}</p>
+                    <p>Deadline: ${deadline}</p>
+                    <p>Duration: ${duration} Minutes</p>
+                    <p>Status: ${validDate ? "Active" : "Expired"}</p>
+                `);
 
-            // Aktualisieren der Modal-Elemente
-            $('#modalTitle').text(title);
-            $('#modalBody').html(`
-                <p>Created by: ${creator}</p>
-                <p>Description: ${description}</p>
-                <p>Deadline: ${deadline}</p>
-                <p>Duration: ${duration} Minutes</p>
-                <p>Status: ${validDate ? "Active" : "Expired"}</p>
-            `);
+                // Ändere die Hintergrundfarbe, wenn das Datum ungültig ist
+                if (!validDate) {
+                    $('#modalContent').css('background-color', 'rgba(180, 10, 10)');
+                } else {
+                    $('#modalContent').css('background-color', ''); // Zurücksetzen auf Standard
+                }
 
-            // Ändere die Hintergrundfarbe, wenn das Datum ungültig ist
-            if (!validDate) {
-                $('#modalContent').css('background-color', 'rgba(180, 10, 10)');
+                // Zeige die Zeitslots und Kommentare an
+                getAppointmentTimeslots(appointmentId, validDate);
+
+                // Zeige das Modal an
+                $('#appointmentModal').modal('show');
             } else {
-                $('#modalContent').css('background-color', ''); // Zurücksetzen auf Standard
+                showErrorModal("No appointment details found.");
             }
-
-            // Zeige die Zeitslots und Kommentare an
-            getAppointmentTimeslots(appointmentId, validDate);
-
-            // Zeige das Modal an
-            $('#appointmentModal').modal('show');
 
             // Seite neu laden, wenn das Modal geschlossen wird
             $('.btn-close, .btn-secondary').on('click', function() {
