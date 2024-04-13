@@ -2,6 +2,7 @@
 include("models/appointment.php");
 include("models/timeslot.php");
 include("models/comment.php");
+include("models/vote.php");
 include("appointmentLogic/mysqli_init.php");
 
 class Datahandler
