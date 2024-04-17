@@ -287,7 +287,7 @@ function getAppointmentTimeslots(appointmentId, validDate) {
 }
 
 // Funktion zum Abrufen der Kommentare für einen Termin
-function getAppointmentComments(appointmentId, validDate) {
+function getAppointmentComments(appointmentId) {
     $.ajax({
         type: "GET",
         url: "../backend/serviceHandler.php",
