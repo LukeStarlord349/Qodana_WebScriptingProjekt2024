@@ -23,6 +23,9 @@ class RequestLogic {
 			case 'getAppointmentComments':
 				$result = $this->dh->getAppointmentComments($param);
 				break;
+			case 'createAppointment':
+				$result = $this->dh->createAppointment($param);
+				break;
 			default:
 				$result = "Method not supported";
 				break;

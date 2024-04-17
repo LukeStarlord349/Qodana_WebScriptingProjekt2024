@@ -3,17 +3,68 @@ $(document).ready(function() {
 
     $('#navNew').on('click', function(event) {
         $("#newAppointmentModal").hide();
-        $('#newAppointmentModal').modal('show'); 
+        $('#newAppointmentModal').modal('show');
+        // eventListener für den close-button 
+        $(".newAppointCancel").on('click', function() {
+            window.location.reload();
+        })
+        createEventlistenerNewAppointment(timeslotsCounter);
     });
 
     $("#addNewTimeslot").on('click', function() {
         timeslotsCounter++;
         addNewTimeslot(timeslotsCounter);
+        createEventlistenerNewAppointment(timeslotsCounter);
     });
 
     // Ajax call für das Anzeigen der Termine auf der Index-Seite
-    getAppointmentData();
+    getAppointmentData(timeslotsCounter);
 });
+
+// Create Eventlistener für das Erstellen eines neuen Termins
+function createEventlistenerNewAppointment(timeslotsCounter) {
+    $(document).off('click', '#sendAppoint').on('click', '#sendAppoint', function() {
+        let appointmentData = {
+            thema: $("#title").val(),
+            description: $("#descr").val(),
+            location: $("#location").val(),
+            deadline: $("#deadline").val(),
+            duration: parseInt($("#duration").val()), // Konvertiere den string in eine Zahl
+            creator: $("#creator").val(),
+            timeslots: []
+        };
+
+        for (let i = 1; i <= timeslotsCounter; i++) {
+            let timeslot = $("#timeslot" + i).val();
+            appointmentData.timeslots.push(timeslot);
+        }
+
+        createAppointment(appointmentData);
+    });
+}
+
+// Funktion zum Erstellen eines neuen Termins
+function createAppointment(appointmentData) {
+    $.ajax({
+        type: "GET",
+        url: "../backend/serviceHandler.php",
+        data: { method: "createAppointment", param: appointmentData },
+        dataType: "json",
+        success: function(response) {
+            console.log(response);
+
+            $('#newAppointmentModal').modal('hide');
+
+            // Success-Modal anzeigen
+            let message = "Appointment created successfully!";
+            showSuccessModal(message);
+        },
+        error: function(xhr, status, error) {
+            let message = "Failed to create appointment: " + error;
+            showErrorModal(message);
+        }
+    });  
+}
 
 // Funktion zum Abrufen der Termin-Daten für die Index-Seite
 function getAppointmentData() {
@@ -25,6 +76,11 @@ function getAppointmentData() {
         dataType: "json",
         success: function(response) {
             let appointments = response;
+
+            // Sortiere die Termine nach der ID absteigend (neuester Termin zuerst)
+            appointments.sort(function(a, b) {
+                return b.id - a.id;
+            });
 
             for (let i = 0; i < appointments.length; i++) {
                 let id = appointments[i].id;
@@ -262,9 +318,8 @@ function addNewTimeslot(timeslotsCounter) {
 
 // Fehlermodal
 function showErrorModal(message) {
-    // Erstelle ein jQuery-Objekt aus dem HTML-String
     let myModalElement = $(`
-        <div class="modal" tabindex="-1" role="dialog">
+        <div class="modal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
@@ -285,5 +340,42 @@ function showErrorModal(message) {
     // Erstelle eine Bootstrap-Modal-Instanz aus dem jQuery-Objekt
     let myModal = new bootstrap.Modal(myModalElement[0]); // Das DOM-Element aus dem jQuery-Objekt holen
     myModal.show();
+
+    myModalElement.on('hidden.bs.modal', function () {
+        window.location.reload(); 
+    });
+
+    $(document.body).append(myModalElement);
+
+}
+
+function showSuccessModal(message) {
+    let myModalElement = $(`
+        <div class="modal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Success</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                </div>
+                </div>
+            </div>
+        </div>`);
+    // Setze den Nachrichtentext
+    myModalElement.find('.modal-body p').text(message);
+    // Erstelle eine Bootstrap-Modal-Instanz aus dem jQuery-Objekt
+    let myModal = new bootstrap.Modal(myModalElement[0]); // Das DOM-Element aus dem jQuery-Objekt holen
+    myModal.show();
+
+    myModalElement.on('hidden.bs.modal', function () {
+        window.location.reload(); // Reload the page
+    });
+
     $(document.body).append(myModalElement);
 }

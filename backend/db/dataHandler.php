@@ -133,4 +133,43 @@ class Datahandler
         $conn->close();
         return $comments;
     }
+
+    public static function createAppointment($appointmentData) {
+        $conn = new mysqli_init();
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+    
+        // Beginne eine Transaktion
+        $conn->begin_transaction();
+    
+        try {
+            // Erstelle das Appointment
+            $sql = "INSERT INTO appointment (thema, descr, duration, deadline, location, creator) VALUES (?, ?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ssisss", $appointmentData['thema'], $appointmentData['description'], $appointmentData['duration'], $appointmentData['deadline'], $appointmentData['location'], $appointmentData['creator']);
+            $stmt->execute();
+            $appointmentId = $conn->insert_id; // Hole die ID des gerade erstellten Appointments
+            $stmt->close();
+    
+            // Erstelle die Timeslots
+            $sql = "INSERT INTO timeslot (appoint_id, start_time) VALUES (?, ?)";
+            $stmt = $conn->prepare($sql);
+            foreach ($appointmentData['timeslots'] as $timeslot) {
+                $stmt->bind_param("is", $appointmentId, $timeslot);
+                $stmt->execute();
+            }
+            $stmt->close();
+    
+            // Committe die Transaktion
+            $conn->commit();
+        } catch (Exception $e) {
+            // Bei einem Fehler mache die Transaktion rückgängig
+            $conn->rollback();
+            return "Error: " . $e->getMessage();
+        }
+    
+        $conn->close();
+        return "Appointment successfully created with ID " . $appointmentId;
+    }
 }
