@@ -26,6 +26,9 @@ class RequestLogic {
 			case 'createAppointment':
 				$result = $this->dh->createAppointment($param);
 				break;
+			case 'createVote':
+				$result = $this->dh->createVote($param);
+				break;
 			default:
 				$result = "Method not supported";
 				break;

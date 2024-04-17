@@ -234,17 +234,61 @@ function getAppointmentTimeslots(appointmentId, validDate) {
             // Inputfeld für Name und submit button für voten
             $('#modalBody').append(`
                 <div class="comment-section"><br>
-                    <input type="text" id="userName" class="form-control" placeholder="Your name" /><br>
-                    <button type="button" class="btn btn-secondary" onclick="submitTimeslotsSelection()">Submit Vote</button>
+                    <input type="text" id="voter" class="form-control" placeholder="Your name" /><br>
+                    <button type="button" class="btn btn-secondary" id="submitVote">Submit Vote</button>
                 </div>
                 `);
             }
 
             // Zeige die Kommentare an
             getAppointmentComments(appointmentId, validDate);
+        
+            // eventListener für den submitVote button erstellen
+            $('#submitVote').on('click', function() {
+                let votesData = []; // votesData array erstellen 
+                let voter = $("#voter").val();
+
+                if(voter === "") {
+                    let message = "Please enter your name!";
+                    showErrorModal(message);
+                    return;
+                }
+
+                // Das Array votesData mit den ausgewählten Timeslots füllen
+                $('.timeslot-item input[type="checkbox"]:checked').each(function() {
+                    var timeSlotId = $(this).attr('id').replace('check', '');
+                    votesData.push({
+                        timeslot_id: timeSlotId,
+                        voter: voter
+                    });
+                });
+                $("#appointmentModal").modal('hide');
+                createVote(votesData);
+            });
         },
         error: function(xhr, status, error) {
             let message = "Failed to load appointment timeslots: " + error;
+            showErrorModal(message);
+        }
+    });
+}
+
+// Funktion zum Erstellen einer neuen Vote
+function createVote(votesData) {
+    $.ajax({
+        type: "GET",
+        url: "../backend/serviceHandler.php",
+        data: { method: "createVote", param: votesData },
+        dataType: "json",
+        success: function(response) {
+            console.log(response);
+
+            // Success-Modal anzeigen
+            let message = "Vote submitted successfully!";
+            showSuccessModal(message);
+        },
+        error: function(xhr, status, error) {
+            let message = "Failed to submit vote: " + error;
             showErrorModal(message);
         }
     });

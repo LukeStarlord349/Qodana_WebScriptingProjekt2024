@@ -10,7 +10,6 @@ class vote
     {
         $this->id = $id;
         $this->timeslot_id = $timeslot_id;
-        $this->timeslot_date = $timeslot_date;
         $this->voter = $voter;
     }
 }

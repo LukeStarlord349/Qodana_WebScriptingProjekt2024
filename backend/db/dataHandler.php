@@ -172,4 +172,31 @@ class Datahandler
         $conn->close();
         return "Appointment successfully created with ID " . $appointmentId;
     }
+
+    public static function createVote($votesData) {
+        $conn = new mysqli_init();
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+    
+        $conn->begin_transaction(); 
+        try {
+            $sql = "INSERT INTO vote (timeslot_id, voter) VALUES (?, ?)";
+            $stmt = $conn->prepare($sql);
+    
+            foreach ($votesData as $vote) {
+                $stmt->bind_param("is", $vote['timeslot_id'], $vote['voter']);
+                $stmt->execute();
+            }
+    
+            $stmt->close();
+            $conn->commit();
+            return "Votes successfully recorded";
+        } catch (Exception $e) {
+            $conn->rollback();
+            return "Error: " . $e->getMessage();
+        } finally {
+            $conn->close();
+        }
+    }
 }
