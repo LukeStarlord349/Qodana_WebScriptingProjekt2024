@@ -34,6 +34,12 @@ function createEventlistenerNewAppointment(timeslotsCounter) {
             timeslots: []
         };
 
+        if (appointmentData.thema === "" || appointmentData.description === "" || appointmentData.location === "" || appointmentData.deadline === "" || appointmentData.duration === "" || appointmentData.creator === "") {
+            let message = "Please fill in all fields!";
+            showErrorModal(message);
+            return;
+        }
+
         for (let i = 1; i <= timeslotsCounter; i++) {
             let timeslot = $("#timeslot" + i).val();
             appointmentData.timeslots.push(timeslot);
@@ -51,7 +57,6 @@ function createAppointment(appointmentData) {
         data: { method: "createAppointment", param: appointmentData },
         dataType: "json",
         success: function(response) {
-            console.log(response);
 
             $('#newAppointmentModal').modal('hide');
 
@@ -250,6 +255,14 @@ function getAppointmentTimeslots(appointmentId, validDate) {
 
                 if(voter === "") {
                     let message = "Please enter your name!";
+                    $("#appointmentModal").modal('hide');
+                    showErrorModal(message);
+                    return;
+                }
+
+                if($('.timeslot-item input[type="checkbox"]:checked').length === 0) {
+                    let message = "Please select at least one timeslot!";
+                    $("#appointmentModal").modal('hide');
                     showErrorModal(message);
                     return;
                 }
@@ -273,27 +286,6 @@ function getAppointmentTimeslots(appointmentId, validDate) {
     });
 }
 
-// Funktion zum Erstellen einer neuen Vote
-function createVote(votesData) {
-    $.ajax({
-        type: "GET",
-        url: "../backend/serviceHandler.php",
-        data: { method: "createVote", param: votesData },
-        dataType: "json",
-        success: function(response) {
-            console.log(response);
-
-            // Success-Modal anzeigen
-            let message = "Vote submitted successfully!";
-            showSuccessModal(message);
-        },
-        error: function(xhr, status, error) {
-            let message = "Failed to submit vote: " + error;
-            showErrorModal(message);
-        }
-    });
-}
-
 // Funktion zum Abrufen der Kommentare für einen Termin
 function getAppointmentComments(appointmentId, validDate) {
     $.ajax({
@@ -310,12 +302,11 @@ function getAppointmentComments(appointmentId, validDate) {
             <div class="new-comment-section">
                 <input type="text" id="commenterName" class="form-control" placeholder="Your name" /><br>
                 <textarea id="newCommentText" class="form-control" placeholder="Write a comment..." rows="3"></textarea><br>
-                <button type="button" class="btn btn-secondary" onclick="submitComment(${appointmentId})">Submit Comment</button><br><br>
+                <button type="button" class="btn btn-secondary" id="submitCommentButton">Submit Comment</button><br><br>
             </div>
             `);
 
             for(let i = 0; i < comments.length; i++) {
-
                 let commentId = comments[i].id;
                 let author = comments[i].author;
                 let content = comments[i].content;
@@ -329,6 +320,25 @@ function getAppointmentComments(appointmentId, validDate) {
                     </div>
                 `);
             }
+
+            // Eventlistener für den submitComment button erstellen
+            $('#submitCommentButton').on('click', function() {
+                let author = $("#commenterName").val();
+                let content = $("#newCommentText").val();
+
+                if(author === "" || content === "") {
+                    $("#appointmentModal").modal('hide');
+                    let message = "Please fill in all fields!";
+                    showErrorModal(message);
+                    return;
+                }
+                let commentData = {
+                    appoint_id: appointmentId,
+                    content: content,
+                    author: author
+                };
+                createComment(commentData);
+            });
         },
         error: function(xhr, status, error) {
             let message = "Failed to load appointment timeslots: " + error;
@@ -337,6 +347,54 @@ function getAppointmentComments(appointmentId, validDate) {
     });
 }
 
+// Funktion zum Erstellen einer neuen Vote
+function createVote(votesData) {
+    $.ajax({
+        type: "GET",
+        url: "../backend/serviceHandler.php",
+        data: { method: "createVote", param: votesData },
+        dataType: "json",
+        success: function(response) {
+            // Success-Modal anzeigen
+            let message = "Vote submitted successfully!";
+            showSuccessModal(message);
+        },
+        error: function(xhr, status, error) {
+            let message = "Failed to submit vote: " + error;
+            showErrorModal(message);
+        }
+    });
+}
+
+// Funktion zum Erstellen eines neuen Kommentars
+function createComment(commentData) {
+    $.ajax({
+        type: "GET",
+        url: "../backend/serviceHandler.php",
+        data: { method: "createComment", param: commentData },
+        dataType: "json",
+        success: function(response) {
+            $("#appointmentModal").modal('hide');
+            // Success-Modal anzeigen
+            let message = "Comment submitted successfully!";
+            showSuccessModal(message);
+        },
+        error: function(xhr, status, error) {
+            let message = "Failed to submit comment: " + error;
+            showErrorModal(message);
+        }
+    });
+}
+
+
+// New timeslots erstellen
+function addNewTimeslot(timeslotsCounter) {
+    $("#timeslots").append(`
+    <div class="mb-3">
+        <label for="timeslot${timeslotsCounter}" class="form-label">Zeitslot ${timeslotsCounter}:</label>
+        <input type="datetime-local" class="form-control" id="timeslot${timeslotsCounter}" name="timeslot${timeslotsCounter}">
+    </div>`);
+}
 
 // Überprüfen, ob der Termin noch aktiv oder schon abgelaufen ist
 function checkIfValidDate (deadline) {
@@ -349,15 +407,6 @@ function checkIfValidDate (deadline) {
     } else {
         return true; 
     }
-}
-
-// New timeslots erstellen
-function addNewTimeslot(timeslotsCounter) {
-    $("#timeslots").append(`
-    <div class="mb-3">
-        <label for="timeslot${timeslotsCounter}" class="form-label">Zeitslot ${timeslotsCounter}:</label>
-        <input type="datetime-local" class="form-control" id="timeslot${timeslotsCounter}" name="timeslot${timeslotsCounter}">
-    </div>`);
 }
 
 // Fehlermodal
@@ -393,6 +442,7 @@ function showErrorModal(message) {
 
 }
 
+// Successmodal
 function showSuccessModal(message) {
     let myModalElement = $(`
         <div class="modal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">

@@ -199,4 +199,29 @@ class Datahandler
             $conn->close();
         }
     }
+
+    public static function createComment($commentData) {
+        $conn = new mysqli_init();
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+    
+        $conn->begin_transaction(); 
+        try {
+            $sql = "INSERT INTO comment (appoint_id, content, author) VALUES (?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+        
+            $stmt->bind_param("iss", $commentData['appoint_id'], $commentData['content'], $commentData['author']);
+            $stmt->execute();
+        
+            $stmt->close();
+            $conn->commit();
+            return "Comment successfully recorded";
+        } catch (Exception $e) {
+            $conn->rollback();
+            return "Error: " . $e->getMessage();
+        } finally {
+            $conn->close();
+        }
+    }
 }

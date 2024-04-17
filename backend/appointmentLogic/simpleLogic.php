@@ -29,6 +29,9 @@ class RequestLogic {
 			case 'createVote':
 				$result = $this->dh->createVote($param);
 				break;
+			case 'createComment':
+				$result = $this->dh->createComment($param);
+				break;
 			default:
 				$result = "Method not supported";
 				break;
