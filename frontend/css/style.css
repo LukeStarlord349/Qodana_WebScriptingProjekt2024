@@ -58,21 +58,21 @@ a:active {
 }
 
  /* New-Appointment-Modal */
-.modal-content {
+.modal-content, .success {
   background-color: rgb(17, 100, 0);
   border-radius: 8px; 
   color: lightgray;
 }
 
-.modal-header, .modal-body, .modal-footer {
-  padding: 20px; 
+.error {
+  background-color: rgb(196, 22, 22);
+  border-radius: 8px; 
+  color: lightgray;
+
 }
 
-.highlight-link {
-  color: #007bff;
-  font-weight: bold;
-  text-decoration: underline;
-  cursor: pointer;
+.modal-header, .modal-body, .modal-footer {
+  padding: 20px; 
 }
 
 /* Appointment-Card */

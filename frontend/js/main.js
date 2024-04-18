@@ -33,18 +33,41 @@ function createEventlistenerNewAppointment(timeslotsCounter) {
             creator: $("#creator").val(),
             timeslots: []
         };
-
-        if (appointmentData.thema === "" || appointmentData.description === "" || appointmentData.location === "" || appointmentData.deadline === "" || appointmentData.duration === "" || appointmentData.creator === "") {
-            let message = "Please fill in all fields!";
-            showErrorModal(message);
-            return;
-        }
-
+        
+        // Füge die Timeslots zum appointmentData-Objekt hinzu
         for (let i = 1; i <= timeslotsCounter; i++) {
             let timeslot = $("#timeslot" + i).val();
             appointmentData.timeslots.push(timeslot);
         }
 
+        // Überprüfen, ob alle Felder ausgefüllt sind, und ob das timeslots Array leer ist
+        if (appointmentData.thema === "" || appointmentData.description === "" || appointmentData.location === "" || appointmentData.deadline === "" || appointmentData.duration === 0 || appointmentData.creator === "" || appointmentData.timeslots.length === 0) {
+            let message = "Please fill in all fields and add at least one timeslot!";
+            showErrorModal(message);
+            return;
+        }
+
+        // Überprüfen der Deadline (darf nicht in der Vergangenheit liegen)
+        if(!checkIfValidDate(appointmentData.deadline)) {
+            let message = "Please enter a valid deadline!";
+            showErrorModal(message);
+            return;
+        }
+
+        // Überprüfen der Timeslots (darf nicht in der Vergangenheit liegen) und darf nicht nach der Deadline liegen
+        for (let i = 0; i < appointmentData.timeslots.length; i++) {
+            if(!checkIfValidDate(appointmentData.timeslots[i])) {
+                let message = "Please enter a valid timeslot!";
+                showErrorModal(message);
+                return;
+            }
+            if(new Date(appointmentData.timeslots[i]) > new Date(appointmentData.deadline)) {
+                let message = "The timeslot must be before the deadline!";
+                showErrorModal(message);
+                return;
+            }
+        }
+        // Erstelle den neuen Termin
         createAppointment(appointmentData);
     });
 }
@@ -67,6 +90,7 @@ function createAppointment(appointmentData) {
         error: function(xhr, status, error) {
             let message = "Failed to create appointment: " + error;
             showErrorModal(message);
+            window.location.reload();
         }
     });  
 }
@@ -140,6 +164,7 @@ function getAppointmentData() {
         error: function(xhr, status, error) {
             let message = "Couldn't load the data! " + error;
             showErrorModal(message);
+            window.location.reload();
         }
     })
 }
@@ -152,39 +177,36 @@ function getAppointmentDetails(appointmentId) {
         data: { method: "getAppointmentDetails", param: appointmentId },
         dataType: "json",
         success: function(response) {
-            if (response) {
-                let title = response.thema;
-                let description = response.descr;
-                let deadline = response.deadline;
-                let creator = response.creator;
-                let duration = response.duration;
-                let validDate = checkIfValidDate(deadline);
+            let title = response.thema;
+            let description = response.descr;
+            let deadline = response.deadline;
+            let creator = response.creator;
+            let duration = response.duration;
+            let validDate = checkIfValidDate(deadline);
 
-                // Aktualisieren der Modal-Elemente
-                $('#modalTitle').text(title);
-                $('#modalBody').html(`
-                    <p>Created by: ${creator}</p>
-                    <p>Description: ${description}</p>
-                    <p>Deadline: ${deadline}</p>
-                    <p>Duration: ${duration} Minutes</p>
-                    <p>Status: ${validDate ? "Active" : "Expired"}</p>
-                `);
+            // Aktualisieren der Modal-Elemente
+            $('#modalTitle').text(title);
+            $('#modalBody').html(`
+                <p>Created by: ${creator}</p>
+                <p>Description: ${description}</p>
+                <p>Deadline: ${deadline}</p>
+                <p>Duration: ${duration} Minutes</p>
+                <p>Status: ${validDate ? "Active" : "Expired"}</p>
+            `);
 
-                // Ändere die Hintergrundfarbe, wenn das Datum ungültig ist
-                if (!validDate) {
-                    $('#modalContent').css('background-color', 'rgba(180, 10, 10)');
-                } else {
-                    $('#modalContent').css('background-color', ''); // Zurücksetzen auf Standard
-                }
-
-                // Zeige die Zeitslots und Kommentare an
-                getAppointmentTimeslots(appointmentId, validDate);
-
-                // Zeige das Modal an
-                $('#appointmentModal').modal('show');
+            // Ändere die Hintergrundfarbe, wenn das Datum ungültig ist
+            if (!validDate) {
+                $('#modalContent').css('background-color', 'rgba(180, 10, 10)');
             } else {
-                showErrorModal("No appointment details found.");
+                $('#modalContent').css('background-color', ''); // Zurücksetzen auf Standard
             }
+
+            // Zeige die Zeitslots und Kommentare an
+            getAppointmentTimeslots(appointmentId, validDate);
+
+            // Zeige das Modal an
+            $('#appointmentModal').modal('show');
+
 
             // Seite neu laden, wenn das Modal geschlossen wird
             $('.btn-close, .btn-secondary').on('click', function() {
@@ -194,6 +216,7 @@ function getAppointmentDetails(appointmentId) {
         error: function(xhr, status, error) {
             let message = "Failed to load appointment details: " + error;
             showErrorModal(message);
+            window.location.reload();
         }
     });
 }
@@ -255,14 +278,12 @@ function getAppointmentTimeslots(appointmentId, validDate) {
 
                 if(voter === "") {
                     let message = "Please enter your name!";
-                    $("#appointmentModal").modal('hide');
                     showErrorModal(message);
                     return;
                 }
 
                 if($('.timeslot-item input[type="checkbox"]:checked').length === 0) {
                     let message = "Please select at least one timeslot!";
-                    $("#appointmentModal").modal('hide');
                     showErrorModal(message);
                     return;
                 }
@@ -282,6 +303,7 @@ function getAppointmentTimeslots(appointmentId, validDate) {
         error: function(xhr, status, error) {
             let message = "Failed to load appointment timeslots: " + error;
             showErrorModal(message);
+            window.location.reload();
         }
     });
 }
@@ -327,7 +349,6 @@ function getAppointmentComments(appointmentId) {
                 let content = $("#newCommentText").val();
 
                 if(author === "" || content === "") {
-                    $("#appointmentModal").modal('hide');
                     let message = "Please fill in all fields!";
                     showErrorModal(message);
                     return;
@@ -343,6 +364,7 @@ function getAppointmentComments(appointmentId) {
         error: function(xhr, status, error) {
             let message = "Failed to load appointment timeslots: " + error;
             showErrorModal(message);
+            window.location.reload();
         }
     });
 }
@@ -362,6 +384,7 @@ function createVote(votesData) {
         error: function(xhr, status, error) {
             let message = "Failed to submit vote: " + error;
             showErrorModal(message);
+            window.location.reload();
         }
     });
 }
@@ -382,16 +405,16 @@ function createComment(commentData) {
         error: function(xhr, status, error) {
             let message = "Failed to submit comment: " + error;
             showErrorModal(message);
+            window.location.reload();
         }
     });
 }
-
 
 // New timeslots erstellen
 function addNewTimeslot(timeslotsCounter) {
     $("#timeslots").append(`
     <div class="mb-3">
-        <label for="timeslot${timeslotsCounter}" class="form-label">Zeitslot ${timeslotsCounter}:</label>
+        <label for="timeslot${timeslotsCounter}" class="form-label">Timeslot ${timeslotsCounter}:</label>
         <input type="datetime-local" class="form-control" id="timeslot${timeslotsCounter}" name="timeslot${timeslotsCounter}">
     </div>`);
 }
@@ -414,7 +437,7 @@ function showErrorModal(message) {
     let myModalElement = $(`
         <div class="modal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog" role="document">
-                <div class="modal-content">
+                <div class="modal-content error">
                 <div class="modal-header">
                     <h5 class="modal-title">Error</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -434,10 +457,6 @@ function showErrorModal(message) {
     let myModal = new bootstrap.Modal(myModalElement[0]); // Das DOM-Element aus dem jQuery-Objekt holen
     myModal.show();
 
-    myModalElement.on('hidden.bs.modal', function () {
-        window.location.reload(); 
-    });
-
     $(document.body).append(myModalElement);
 
 }
@@ -447,7 +466,7 @@ function showSuccessModal(message) {
     let myModalElement = $(`
         <div class="modal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog" role="document">
-                <div class="modal-content">
+                <div class="modal-content success">
                 <div class="modal-header">
                     <h5 class="modal-title">Success</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
