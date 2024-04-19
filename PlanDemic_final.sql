@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 19. Apr 2024 um 10:18
+-- Erstellungszeit: 19. Apr 2024 um 11:52
 -- Server-Version: 10.4.32-MariaDB
 -- PHP-Version: 8.2.12
 
@@ -102,6 +102,14 @@ CREATE TABLE `vote` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Daten für Tabelle `vote`
+--
+
+INSERT INTO `vote` (`id`, `timeslot_id`, `voter`) VALUES
+(1, 1, 'Max'),
+(2, 1, 'Lukas');
+
+--
 -- Indizes der exportierten Tabellen
 --
 
@@ -158,7 +166,7 @@ ALTER TABLE `timeslot`
 -- AUTO_INCREMENT für Tabelle `vote`
 --
 ALTER TABLE `vote`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints der exportierten Tabellen

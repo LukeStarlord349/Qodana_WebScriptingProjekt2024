@@ -134,6 +134,31 @@ class Datahandler
         return $comments;
     }
 
+    public static function getVoterNames($timeSlotId) {
+        $conn = new mysqli_init();
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+        $sql = "SELECT voter FROM vote WHERE timeslot_id = ?";
+        if ($stmt = $conn->prepare($sql)) {
+            $stmt->bind_param("i", $timeSlotId);
+            if ($stmt->execute()) {
+                $result = $stmt->get_result();
+                $voters = [];
+                while ($row = $result->fetch_assoc()) {
+                    $voters[] = $row['voter'];
+                }
+                $stmt->close();
+            } else {
+                $voters = ["error" => "Error executing statement: " . $stmt->error];
+            }
+        } else {
+            $voters = ["error" => "Error preparing statement: " . $conn->error];
+        }
+        $conn->close();
+        return $voters;
+    }
+
     public static function createAppointment($appointmentData) {
         $conn = new mysqli_init();
         if ($conn->connect_error) {

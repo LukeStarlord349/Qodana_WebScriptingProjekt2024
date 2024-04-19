@@ -32,6 +32,9 @@ class RequestLogic {
 			case 'createComment':
 				$result = $this->dh->createComment($param);
 				break;
+			case 'getVoterNames':
+				$result = $this->dh->getVoterNames($param);
+				break;
 			default:
 				$result = "Method not supported";
 				break;

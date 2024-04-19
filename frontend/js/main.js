@@ -106,6 +106,12 @@ function getAppointmentData() {
         success: function(response) {
             let appointments = response;
 
+            // Wenn noch keine Appointments vorhanden sind
+            if(appointments.length === 0) {
+                $("#appointment-container").append("<h3>No appointments found!</h3>");
+                return;
+            }
+
             // Sortiere die Termine nach der ID absteigend (neuester Termin zuerst)
             appointments.sort(function(a, b) {
                 return b.id - a.id;
@@ -228,7 +234,7 @@ function getAppointmentTimeslots(appointmentId, validDate) {
         url: "../backend/serviceHandler.php",
         data: { method: "getAppointmentTimeslots", param: appointmentId },
         dataType: "json",
-        success: function(response) {
+        success: async function(response) {
             let timeslots = response;
 
             $("#modalBody").append("<h5>Available Timeslots</h5>");
@@ -238,12 +244,17 @@ function getAppointmentTimeslots(appointmentId, validDate) {
                 let timeSlotId = timeslots[i].id;
                 let voteCount = timeslots[i].vote_count;
                 let timeslotCount = i + 1;
+                let voterNames = "";
+
+                if(voteCount) { // Wenn es Votes gibt, dann die Namen der Voter abrufen
+                    voterNames = await getVoterNames(timeSlotId);
+                }
 
                 // Wenn das Datum abgelaufen ist, werden die Checkboxen nicht angezeigt
                 if(validDate) {
                     $('#modalBody').append(`
                     <div class="timeslot-item">
-                        <span>${timeslotCount}.) ${startTime} || Votes: ${voteCount} ||</span>
+                        <span title="${voterNames}">${timeslotCount}.) ${startTime} || Votes: ${voteCount} ||</span>
                         <input type="checkbox" id="check${timeSlotId}" name="timeslotCheck">
                         <label for="check${timeSlotId}">Select</label>
                     </div>
@@ -253,7 +264,7 @@ function getAppointmentTimeslots(appointmentId, validDate) {
                 // Zeige die Timeslots an
                 $('#modalBody').append(`
                     <div class="timeslot-item">
-                        <span>${timeslotCount}.) ${startTime}</span>
+                    <span>${timeslotCount}.) ${startTime} || Votes: ${voteCount} ||</span>
                     </div>
                 `);
                 }
@@ -305,6 +316,35 @@ function getAppointmentTimeslots(appointmentId, validDate) {
             showErrorModal(message);
             window.location.reload();
         }
+    });
+}
+
+// Die Namen der Voter für einen Timeslot abrufen
+function getVoterNames(timeSlotId) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "GET",
+            url: "../backend/serviceHandler.php",
+            data: { method: "getVoterNames", param: timeSlotId },
+            dataType: "json",
+            success: function(response) {
+                let voterNames = response;
+                let voterNamesString = "";
+                for (let i = 0; i < voterNames.length; i++) {
+                    voterNamesString += voterNames[i] + ", ";
+                }
+                if (voterNamesString.endsWith(", ")) { 
+                    voterNamesString = voterNamesString.slice(0, -2);
+                }
+                console.log(voterNamesString);
+                resolve(voterNamesString);
+            },
+            error: function(xhr, status, error) {
+                let message = "Failed to load voter names: " + error;
+                console.error(message);
+                reject(message);
+            }
+        });
     });
 }
 
