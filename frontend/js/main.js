@@ -170,7 +170,6 @@ function getAppointmentData() {
         error: function(xhr, status, error) {
             let message = "Couldn't load the data! " + error;
             showErrorModal(message);
-            window.location.reload();
         }
     })
 }
