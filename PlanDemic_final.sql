@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 12. Apr 2024 um 17:46
+-- Erstellungszeit: 19. Apr 2024 um 10:18
 -- Server-Version: 10.4.32-MariaDB
 -- PHP-Version: 8.2.12
 
@@ -42,7 +42,7 @@ CREATE TABLE `appointment` (
 --
 
 INSERT INTO `appointment` (`id`, `thema`, `descr`, `duration`, `deadline`, `location`, `creator`) VALUES
-(1, 'Erster Termin', 'Dies ist eine description für Termin 1', 6, '2024-04-18 10:00:00', 'Fh Technikum', 'Lukas'),
+(1, 'Erster Termin', 'Dies ist eine description für Termin 1', 6, '2024-04-29 10:00:00', 'Fh Technikum', 'Lukas'),
 (2, 'Abgelaufen Test 2', 'Dies ist eine description für Abgelaufen Test 2', 60, '2024-04-11 10:00:00', 'Wien', 'Max');
 
 -- --------------------------------------------------------
@@ -168,7 +168,7 @@ ALTER TABLE `vote`
 -- Constraints der Tabelle `comment`
 --
 ALTER TABLE `comment`
-  ADD CONSTRAINT `fk_comment_appointment_id` FOREIGN KEY (`appoint_id`) REFERENCES `appointment` (`id`);
+  ADD CONSTRAINT `fk_comment_appointment_id` FOREIGN KEY (`appoint_id`) REFERENCES `appointment` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints der Tabelle `timeslot`
