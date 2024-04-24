@@ -101,7 +101,7 @@ function getAppointmentData() {
         type: "GET",
         url: "../backend/serviceHandler.php",
         cache: false,
-        data: {method: "getAppointmentData" , param: "test"},
+        data: {method: "getAppointmentData"},
         dataType: "json",
         success: function(response) {
             let appointments = response;
@@ -307,6 +307,7 @@ function getAppointmentTimeslots(appointmentId, validDate) {
                     });
                 });
                 $("#appointmentModal").modal('hide');
+                
                 createVote(votesData);
             });
         },
