@@ -263,7 +263,7 @@ function getAppointmentTimeslots(appointmentId, validDate) {
                 // Zeige die Timeslots an
                 $('#modalBody').append(`
                     <div class="timeslot-item">
-                    <span>${timeslotCount}.) ${startTime} || Votes: ${voteCount} ||</span>
+                    <span title="${voterNames}">${timeslotCount}.) ${startTime} || Votes: ${voteCount} ||</span>
                     </div>
                 `);
                 }
@@ -307,7 +307,7 @@ function getAppointmentTimeslots(appointmentId, validDate) {
                     });
                 });
                 $("#appointmentModal").modal('hide');
-                
+
                 createVote(votesData);
             });
         },
